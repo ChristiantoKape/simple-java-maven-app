@@ -4,9 +4,9 @@ node {
             sh 'mvn -B -DskipTests clean package'
         }
         stage('Test') {
-            // checkout scm
+            checkout scm
             sh 'mvn test'
-            // junit 'target/surefire-reports/*.xml'
+            junit 'target/surefire-reports/*.xml'
         }
     }
 }
