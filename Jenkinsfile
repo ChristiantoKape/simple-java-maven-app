@@ -1,11 +1,12 @@
 node {
-    def mvnHome = tool 'M3'
-    
-    stage('Build') {
-        sh "${mvnHome}/bin/mvn -B clean package"
-    }
-    
-    stage('Test') {
-        sh "${mvnHome}/bin/mvn test"
+    docker.image('maven:3.8.5-eclipse-temurin-8-alpine').inside('-v /root/.m2:/root/.m2') {
+        stage('Build') {
+            sh 'mvn -B -DskipTests clean package'
+        }
+        stage('Test') {
+            checkout scm
+            sh 'mvn test'
+            junit 'target/surefire-reports/*.xml'
+        }
     }
 }
