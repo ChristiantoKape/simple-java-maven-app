@@ -1,15 +1,11 @@
 node {
-    stage('Checkout') {
-        checkout scm
+    def mvnHome = tool 'M3'
+    
+    stage('Build') {
+        sh "${mvnHome}/bin/mvn -B clean package"
     }
-
-    docker.image('maven:3.9.2-openjdk-17-slim').inside {
-        stage('Build') {
-            sh 'mvn clean install'
-        }
-
-        stage('Test') {
-            sh 'mvn test'
-        }
+    
+    stage('Test') {
+        sh "${mvnHome}/bin/mvn test"
     }
 }
