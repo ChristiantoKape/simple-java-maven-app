@@ -1,5 +1,5 @@
 node {
-    docker.image('maven:3.9.2-eclipse-temurin-17-alpine').inside('-v /root/.m2:/root/.m2') {
+    docker.image('maven:3.9.2-eclipse-temurin-17-alpine').inside('-v /root/.m2:/root/.m2 --user root:root') {
         stage('Build') {
             sh 'mvn -B -DskipTests clean package'
         }
@@ -23,7 +23,7 @@ node {
                     sudo systemctl start nginx
                     sudo systemctl enable nginx
                     "
-                    scp file ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com:/var/www/html/
+                    scp target/*.jar ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com:/var/www/html/
                 """
             }
             sleep(time: 1, unit: 'MINUTES')
