@@ -15,14 +15,14 @@ node {
         }
 
         stage('Deploy') {
-            sshagent(credentials: ['ec2-ssh-key']) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                 sh """
-                    ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com "
-                        sudo yum install -y nginx
-                        sudo systemctl start nginx
-                        sudo systemctl enable nginx
+                    ssh -i $SSH_KEY -o StrictHostKeyChecking=no ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com "
+                    sudo yum install -y nginx
+                    sudo systemctl start nginx
+                    sudo systemctl enable nginx
                     "
-                    scp file ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com:/var/www/html/
+                    scp -i $SSH_KEY file ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com:/var/www/html/
                 """
             }
             sleep(time: 1, unit: 'MINUTES')
