@@ -15,7 +15,7 @@ node {
         }
 
         stage('Deploy') {
-            sshagent(['ec2-ssh-key']) {
+            sshagent(credentials: ['ec2-ssh-key']) {
                 sh """
                     ssh -o StrictHostKeyChecking=no ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com "
                         sudo yum install -y nginx
