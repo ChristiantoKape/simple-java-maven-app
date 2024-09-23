@@ -22,7 +22,7 @@ node {
                         sudo systemctl start nginx
                         sudo systemctl enable nginx
                     "
-                    scp -r build/* ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com:/var/www/html/
+                    scp file ec2-user@ec2-54-253-207-230.ap-southeast-2.compute.amazonaws.com:/var/www/html/
                 """
             }
             sleep(time: 1, unit: 'MINUTES')
